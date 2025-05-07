@@ -1,0 +1,15 @@
+{
+  "name": "Beach Bumm Training Guide",
+  "short_name": "Beach Bumm",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0077ff",
+  "theme_color": "#0077ff",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 48x48 32x32 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}
