@@ -131,10 +131,18 @@
     .preview-trigger:hover .preview-popup {
       display: block;
     }
+     @media (prefers-color-scheme: dark) {
+    #qr-code {
+      content: url('beachbumm-training-guide-qr-dark.png');
+    }
   </style>
 </head>
 <body>
-  <h1>Beach Bumm Training Guide</h1>
+<h1>
+    <img id="qr-code" src="beachbumm-training-guide-qr.png" alt="QR Code"
+         style="height: 32px; vertical-align: middle; margin-right: 8px;">
+    Beach Bumm Training Guide
+  </h1>
   <h2 id="today-highlight"></h2>
 
   <button onclick="toggleDarkMode()" style="margin: 10px auto; display: block; padding: 8px 16px;">🌙 Toggle Dark Mode</button>
