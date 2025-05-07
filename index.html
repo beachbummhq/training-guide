@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>Beach Bumm Training Guide</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      margin: 0;
+      padding: 0 20px;
+    }
+    body.dark-mode {
+      background: #121212;
+      color: #e0e0e0;
+    }
+    .day {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin: 20px auto;
+      padding: 20px;
+      max-width: 700px;
+      position: relative;
+    }
+    body.dark-mode .day {
+      background: #1e1e1e;
+      color: #e0e0e0;
+      box-shadow: 0 4px 10px rgba(255, 255, 255, 0.05);
+    }
+    .day.active {
+      border-left: 6px solid #0077ff;
+    }
+    body.dark-mode .day.active {
+      border-left: 6px solid #00bcd4;
+    }
+    .exercise {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .exercise input {
+      transform: scale(1.2);
+    }
+    .exercise-title {
+      flex: 1;
+      padding-left: 10px;
+    }
+    .exercise-sets {
+      font-size: 0.85em;
+      margin-left: 10px;
+      color: #555;
+    }
+    .exercise-weight {
+      font-size: 0.85em;
+      margin-left: 10px;
+      color: #888;
+    }
+    body.dark-mode .exercise-sets,
+    body.dark-mode .exercise-weight,
+    body.dark-mode .theme-label {
+      color: #bbb;
+    }
+    .video-link {
+      text-decoration: none;
+      font-size: 0.85em;
+      color: #0077ff;
+      margin-left: 10px;
+    }
+    body.dark-mode .video-link {
+      color: #00bcd4;
+    }
+    .theme-label {
+      font-size: 1em;
+      margin-bottom: 10px;
+      color: #555;
+    }
+    .panel {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    body.dark-mode .panel {
+      background: #1e1e1e;
+      color: #e0e0e0;
+      box-shadow: 0 4px 10px rgba(255, 255, 255, 0.05);
+    }
+    .panel h2 {
+      text-align: center;
+    }
+    .panel input,
+    .panel button {
+      background-color: #f0f0f0;
+      color: #000;
+      border: 1px solid #ccc;
+    }
+    body.dark-mode .panel input,
+    body.dark-mode .panel button {
+      background-color: #222;
+      color: #fff;
+      border: 1px solid #444;
+    }
+    .preview-trigger {
+      margin-left: 10px;
+      cursor: pointer;
+      position: relative;
+    }
+    .preview-popup {
+      display: none;
+      position: absolute;
+      top: 25px;
+      left: 0;
+      z-index: 10;
+      background: #000;
+      padding: 4px;
+      border-radius: 8px;
+    }
+    .preview-popup img {
+      width: 180px;
+      border-radius: 6px;
+    }
+    .preview-trigger:hover .preview-popup {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>Beach Bumm Training Guide</h1>
+  <h2 id="today-highlight"></h2>
+
+  <button onclick="toggleDarkMode()" style="margin: 10px auto; display: block; padding: 8px 16px;">🌙 Toggle Dark Mode</button>
+
+  <div id="training-plan"></div>
+
+  <script>
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    }
+
+    // Apply saved theme on load
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.body.classList.add('dark-mode');
+    }
+
+    // 📝 FAT BURN ICON SUPPORT
+    function getFatBurnIcon(level) {
+      return level === "high" ? " 🔥" : "";
+    }
+
+    // Modify your trainingPlan here to add fatburn tags to top exercises
+const trainingPlan = {
+  Monday: {
+    theme: "💥 Upper Body Strength",
+    exercises: [
+      { title: "Barbell Bench Press", sets: "4x8", weight: "30–40 kg", video: "https://www.youtube.com/watch?v=gRVjAtPip0Y", image: "Barbell Bench Press.png" },
+      { title: "Dumbbell Shoulder Press", sets: "3x10", weight: "8–10 kg", video: "https://www.youtube.com/watch?v=B-aVuyhvLHU", image: "Dumbbell Shoulder Press.png" },
+      { title: "Dumbbell Row", sets: "3x10", weight: "10–14 kg", video: "https://www.youtube.com/watch?v=pYcpY20QaE8", image: "Dumbbell Row.png" },
+      { title: "Barbell Biceps Curl", sets: "3x12", weight: "15–20 kg", video: "https://www.youtube.com/watch?v=kwG2ipFRgfo", image: "Barbell Biceps Curl.png" },
+      { title: "Dumbbell Triceps Kickbacks", sets: "3x12", weight: "6–8 kg", video: "https://www.youtube.com/watch?v=6SS6K3lAwZ8", image: "Dumbbell Triceps Kickbacks.png" },
+      { title: "Plank Hold", sets: "3x 30–60s", weight: "Bodyweight", video: "https://www.youtube.com/watch?v=pSHjTRCQxIw", image: "Plank Hold.png" }
+    ]
+  },
+  Tuesday: {
+    theme: "🔥 Cardio + Core",
+    exercises: [
+      { title: "Bike Intervals", sets: "8 rounds: 30s fast + 90s slow", weight: "", video: "https://www.youtube.com/watch?v=TY0f2mgR3GI", image: "Bike Intervals.png", fatburn: "high" },
+      { title: "Stepper", sets: "5–10 min steady", weight: "", video: "https://www.youtube.com/watch?v=dQqApCGd5Ss", image: "Step-Ups.png" },
+      { title: "Leg Raises", sets: "3x12", weight: "Bodyweight", video: "https://www.youtube.com/watch?v=JB2oyawG9KI", image: "Leg Raises.png" },
+      { title: "Russian Twists", sets: "3x20", weight: "Bodyweight / 4–6 kg", video: "https://www.youtube.com/watch?v=wkD8rjkodUI", image: "Russian Twists.png" },
+      { title: "Bicycle Crunches", sets: "3x20", weight: "Bodyweight", video: "https://www.youtube.com/watch?v=9FGilxCbdz8", image: "Bicycle Crunches.png" }
+    ]
+  },
+  Wednesday: {
+    theme: "🦵 Lower Body Strength",
+    exercises: [
+      { title: "Goblet Squat", sets: "4x10", weight: "12–16 kg", video: "https://www.youtube.com/watch?v=e44isfipVF0", image: "Goblet Squat.png", fatburn: "high" },
+      { title: "Romanian Deadlift", sets: "3x10", weight: "35–45 kg", video: "https://www.youtube.com/watch?v=2SHsk9AzdjA", image: "Romanian Deadlift.png", fatburn: "high" },
+      { title: "Step-Ups", sets: "3x10/leg", weight: "8–12 kg", video: "https://www.youtube.com/watch?v=dQqApCGd5Ss", image: "Step-Ups.png" },
+      { title: "Kettlebell Swings", sets: "3x15", weight: "16–20 kg", video: "https://www.youtube.com/watch?v=sSESeQAir2M", image: "Kettlebell Swings.png", fatburn: "high" },
+      { title: "Calf Raises", sets: "3x20", weight: "Bodyweight or Dumbbells", video: "https://www.youtube.com/watch?v=-M4-G8p8fmc", image: "Calf Raises.png" },
+      { title: "Side Plank", sets: "2x30s/side", weight: "Bodyweight", video: "https://www.youtube.com/watch?v=K2VljzCC16g", image: "Side Plank.png" }
+    ]
+  },
+  Thursday: {
+    theme: "🧩 Six-Pack Abs Focus",
+    exercises: [
+      { title: "Leg Raises", sets: "4x15", weight: "Bodyweight", video: "https://www.youtube.com/watch?v=JB2oyawG9KI", image: "Leg Raises.png" },
+      { title: "Bicycle Crunches", sets: "4x20", weight: "Bodyweight", video: "https://www.youtube.com/watch?v=9FGilxCbdz8", image: "Bicycle Crunches.png" },
+      { title: "Plank", sets: "3x 1 min hold", weight: "Bodyweight", video: "https://www.youtube.com/watch?v=pSHjTRCQxIw", image: "Plank Hold.png" },
+      { title: "Russian Twists", sets: "3x30", weight: "Bodyweight / 4–6 kg", video: "https://www.youtube.com/watch?v=wkD8rjkodUI", image: "Russian Twists.png" },
+      { title: "Side Plank", sets: "2x 30s/side", weight: "Bodyweight", video: "https://www.youtube.com/watch?v=K2VljzCC16g", image: "Side Plank.png" }
+    ]
+  },
+  Friday: {
+    theme: "⚡ Full Body Circuit",
+    exercises: [
+      { title: "Kettlebell Swings", sets: "45s work / 15s rest", weight: "16–20 kg", video: "https://www.youtube.com/watch?v=sSESeQAir2M", image: "Kettlebell Swings.png", fatburn: "high" },
+      { title: "Push-Ups", sets: "45s work / 15s rest", weight: "Bodyweight", video: "https://www.youtube.com/watch?v=_l3ySVKYVJ8", image: "Push-Ups.png" },
+      { title: "Dumbbell Squat + Press", sets: "45s work / 15s rest", weight: "8–12 kg", video: "https://www.youtube.com/watch?v=7JtzNydMIJ8", image: "Dumbbell Squat Press.png" },
+      { title: "Stepper or Jump Rope", sets: "45s work / 15s rest", weight: "Bodyweight", video: "https://www.youtube.com/watch?v=u3zgHI8QnqE", image: "Step-Ups.png" },
+      { title: "Mountain Climbers", sets: "45s work / 15s rest", weight: "Bodyweight", video: "https://www.youtube.com/watch?v=nmwgirgXLYM", image: "Mountain Climbers.png", fatburn: "high" },
+      { title: "Plank", sets: "45s work / 15s rest", weight: "Bodyweight", video: "https://www.youtube.com/watch?v=pSHjTRCQxIw", image: "Plank Hold.png" }
+    ]
+  }
+};
+
+
+    const days = Object.keys(trainingPlan);
+    const todayIndex = new Date().getDay();
+    const todayName = days[(todayIndex + 6) % 7];
+    document.getElementById("today-highlight").textContent = `Today is: ${todayName}`;
+
+    const resetBtn = document.createElement("button");
+    resetBtn.textContent = "🔄 Reset All Progress";
+    resetBtn.style = "display: block; margin: 20px auto; padding: 10px 20px; background: #e74c3c; color: #fff; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;";
+    resetBtn.onclick = () => {
+      if (confirm("Are you sure you want to reset all progress?")) {
+        Object.keys(localStorage).forEach(key => {
+          if (key.startsWith("checkbox-")) {
+            localStorage.removeItem(key);
+          }
+        });
+        location.reload();
+      }
+    };
+    document.getElementById("training-plan").before(resetBtn);
+
+    days.forEach(day => {
+      const dayDiv = document.createElement("div");
+      dayDiv.classList.add("day");
+      if (day === todayName) dayDiv.classList.add("active");
+      const heading = document.createElement("h3");
+      heading.textContent = day;
+      const theme = document.createElement("div");
+      theme.className = "theme-label";
+      theme.textContent = trainingPlan[day].theme;
+      dayDiv.appendChild(heading);
+      dayDiv.appendChild(theme);
+
+      trainingPlan[day].exercises.forEach(ex => {
+        const exDiv = document.createElement("div");
+        exDiv.classList.add("exercise");
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        const storageKey = `checkbox-${day}-${ex.title}`;
+        checkbox.checked = localStorage.getItem(storageKey) === 'true';
+        checkbox.addEventListener("change", () => {
+          localStorage.setItem(storageKey, checkbox.checked);
+        });
+
+        const label = document.createElement("span");
+        label.className = "exercise-title";
+        label.textContent = ex.title;
+        label.textContent += getFatBurnIcon(ex.fatburn);
+
+        const sets = document.createElement("span");
+        sets.className = "exercise-sets";
+        sets.textContent = ex.sets;
+
+        const weight = document.createElement("span");
+        weight.className = "exercise-weight";
+        weight.textContent = ex.weight;
+
+        exDiv.appendChild(checkbox);
+        exDiv.appendChild(label);
+
+        if (ex.image) {
+          const preview = document.createElement("span");
+          preview.className = "preview-trigger";
+          preview.textContent = "🖼️";
+
+          const popup = document.createElement("div");
+          popup.className = "preview-popup";
+          const img = document.createElement("img");
+          img.src = `images/${ex.image}`;
+          popup.appendChild(img);
+          preview.appendChild(popup);
+          exDiv.appendChild(preview);
+        }
+
+        exDiv.appendChild(sets);
+        exDiv.appendChild(weight);
+
+        if (ex.video) {
+          const video = document.createElement("a");
+          video.className = "video-link";
+          video.href = ex.video;
+          video.target = "_blank";
+          video.textContent = "▶";
+          exDiv.appendChild(video);
+        }
+
+        dayDiv.appendChild(exDiv);
+      });
+
+      document.getElementById("training-plan").appendChild(dayDiv);
+    });
+
+  </script>
+
+<div class="panel">
+  <h2>🏋️ 1RM Estimator</h2>
+  <p>Enter the weight and reps from your best set to estimate your one-rep max (1RM):</p>
+  <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between;">
+    <input id="est-weight" type="number" placeholder="Weight lifted (kg)" style="flex: 1; padding: 8px; font-size: 1em;" />
+    <input id="est-reps" type="number" placeholder="Reps performed" style="flex: 1; padding: 8px; font-size: 1em;" />
+    <button onclick="calculate1RM()" style="flex: 1 0 100%; padding: 10px; font-weight: bold; cursor: pointer; border-radius: 6px;">Estimate 1RM</button>
+  </div>
+  <p id="rm-result" style="margin-top: 15px; font-weight: bold; font-size: 1.2em;"></p>
+</div>
+
+<div class="panel">
+  <h2>🎯 Reps at Target Weight Estimator</h2>
+  <p>Estimate how many reps you could do at a given weight based on your 1RM:</p>
+  <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between;">
+    <input id="input-1rm" type="number" placeholder="Estimated 1RM (kg)" style="flex: 1; padding: 8px; font-size: 1em;" />
+    <input id="input-weight" type="number" placeholder="Target weight (kg)" style="flex: 1; padding: 8px; font-size: 1em;" />
+    <button onclick="estimateReps()" style="flex: 1 0 100%; padding: 10px; font-weight: bold; cursor: pointer; border-radius: 6px;">Estimate Reps</button>
+  </div>
+  <p id="rep-result" style="margin-top: 15px; font-weight: bold; font-size: 1.2em;"></p>
+</div>
+
+<script>
+  function calculate1RM() {
+    const weight = parseFloat(document.getElementById("est-weight").value);
+    const reps = parseInt(document.getElementById("est-reps").value);
+    if (!weight || !reps || reps <= 0) {
+      document.getElementById("rm-result").textContent = "Please enter valid numbers for both fields.";
+      return;
+    }
+    const oneRM = weight * (1 + reps / 30);
+    document.getElementById("rm-result").textContent = `Estimated 1RM: ${oneRM.toFixed(1)} kg`;
+  }
+
+  function estimateReps() {
+    const oneRM = parseFloat(document.getElementById("input-1rm").value);
+    const targetWeight = parseFloat(document.getElementById("input-weight").value);
+    if (!oneRM || !targetWeight || targetWeight <= 0 || oneRM <= 0 || targetWeight > oneRM) {
+      document.getElementById("rep-result").textContent = "Please enter valid numbers (target weight ≤ 1RM).";
+      return;
+    }
+    const reps = 30 * (oneRM / targetWeight - 1);
+    document.getElementById("rep-result").textContent = `Estimated max reps at ${targetWeight} kg: ${Math.round(reps)} reps`;
+  }
+</script>
+
+<div class="panel">
+  <h2 style="text-align: center;">😴 Recovery & Sleep Optimization</h2>
+  <ul style="line-height: 1.6;">
+    <li><strong>19:30</strong> – Dim lights, reduce screens (boost melatonin)</li>
+    <li><strong>19:45</strong> – Light stretching or foam rolling (5–10 min)</li>
+    <li><strong>20:00</strong> – Snack: Cottage cheese + walnuts or Greek yogurt + flaxseed</li>
+    <li><strong>20:15</strong> – Optional magnesium/ZMA supplement</li>
+    <li><strong>20:30</strong> – Journal 2 wins of the day + start pink noise</li>
+    <li><strong>21:00</strong> – Lights out 😴</li>
+  </ul>
+  <p><strong>⚠️ Tip:</strong> Limit beer to weekends or before 17:00 for better sleep and fat burning.</p>
+</div>
+
+<div class="panel">
+  <h2 style="text-align: center;">💧 Hydration & Snack Tweaks</h2>
+  <ul style="line-height: 1.6;">
+    <li>🚰 <strong>Hydration goal</strong>: 2–2.5L/day. Start with 300–500ml in the morning.</li>
+    <li>💡 Keep a desk water bottle or glass visible all day.</li>
+    <li>🍌 Add protein to breakfast: scoop of whey or Greek yogurt with banana.</li>
+    <li>🥜 Snack smart: pair dried fruit with nuts or dark chocolate (80%).</li>
+    <li>🍨 Swap dessert: Greek yogurt + berries instead of ice cream.</li>
+    <li>🕗 Late snack: Casein protein, cottage cheese, or protein mug cake for overnight burn.</li>
+  </ul>
+</div>
+
+
+<script>
+
+const timerBar = document.createElement("div");
+timerBar.id = "timer-bar";
+timerBar.style = `
+  position: sticky;
+  top: 0;
+  background: #0077ff;
+  color: white;
+  font-size: 1.5em;
+  font-weight: bold;
+  padding: 10px;
+  text-align: center;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const timerRow = document.createElement("div");
+timerRow.style = "display: flex; align-items: center; gap: 10px;";
+
+const timerLabel = document.createElement("span");
+timerLabel.id = "timer-label";
+timerLabel.textContent = "⏱️ 40:00";
+
+const startButton = document.createElement("button");
+startButton.textContent = "▶ Start";
+startButton.style = "padding: 5px 10px; font-size: 0.8em; cursor: pointer; background: #28a745; color: white; border: none; border-radius: 4px;";
+
+const stopButton = document.createElement("button");
+stopButton.textContent = "⏸ Stop";
+stopButton.style = "padding: 5px 10px; font-size: 0.8em; cursor: pointer; background: #ffc107; color: black; border: none; border-radius: 4px;";
+
+const resetButton = document.createElement("button");
+resetButton.textContent = "🔁 Reset";
+resetButton.style = "padding: 5px 10px; font-size: 0.8em; cursor: pointer; background: #005ecb; color: white; border: none; border-radius: 4px;";
+
+const presets = [20, 30, 40, 60];
+const presetWrapper = document.createElement("div");
+presetWrapper.style = "margin-top: 5px; display: flex; gap: 5px;";
+presets.forEach(min => {
+  const btn = document.createElement("button");
+  btn.textContent = `${min}m`;
+  btn.style = "padding: 4px 8px; font-size: 0.8em; cursor: pointer; background: #003f99; color: white; border: none; border-radius: 4px;";
+  btn.onclick = () => {
+    countdown = min * 60;
+    totalTime = countdown;
+    updateLabel();
+    updateProgress();
+  };
+  presetWrapper.appendChild(btn);
+});
+
+const progressContainer = document.createElement("div");
+progressContainer.style = "margin-top: 6px; width: 100%; background: #004aad; height: 6px; border-radius: 4px; overflow: hidden;";
+const progressBar = document.createElement("div");
+progressBar.id = "progress-bar";
+progressBar.style = "height: 100%; width: 0%; background: #00e0ff; transition: width 1s linear;";
+progressContainer.appendChild(progressBar);
+
+startButton.onclick = () => {
+  clearInterval(timerInterval);
+  timerInterval = setInterval(runTimer, 1000);
+};
+
+stopButton.onclick = () => {
+  clearInterval(timerInterval);
+};
+
+resetButton.onclick = () => {
+  countdown = totalTime;
+  updateLabel();
+  updateProgress();
+  clearInterval(timerInterval);
+};
+
+timerRow.appendChild(timerLabel);
+timerRow.appendChild(startButton);
+timerRow.appendChild(stopButton);
+timerRow.appendChild(resetButton);
+timerBar.appendChild(timerRow);
+timerBar.appendChild(presetWrapper);
+timerBar.appendChild(progressContainer);
+document.body.prepend(timerBar);
+
+let countdown = 40 * 60;
+let totalTime = countdown;
+let timerInterval;
+
+function runTimer() {
+  const minutes = String(Math.floor(countdown / 60)).padStart(2, '0');
+  const seconds = String(countdown % 60).padStart(2, '0');
+  timerLabel.textContent = `⏱️ ${minutes}:${seconds}`;
+
+  updateProgress();
+
+  if (countdown <= 0) {
+    clearInterval(timerInterval);
+    timerLabel.textContent = "✅ Workout Complete!";
+  }
+  countdown--;
+}
+
+function updateLabel() {
+  const minutes = String(Math.floor(countdown / 60)).padStart(2, '0');
+  const seconds = String(countdown % 60).padStart(2, '0');
+  timerLabel.textContent = `⏱️ ${minutes}:${seconds}`;
+}
+
+function updateProgress() {
+  const percent = ((totalTime - countdown) / totalTime) * 100;
+  progressBar.style.width = `${Math.min(percent, 100)}%`;
+}
+
+updateLabel();
+
+
+</script>
+
+<script>
+
+  // Hydration Reminder Notifications
+if ('Notification' in window && Notification.permission !== 'granted') {
+  Notification.requestPermission();
+}
+
+function showHydrationReminder() {
+  if (Notification.permission === 'granted') {
+    new Notification("💧 Time to hydrate!", {
+      body: "Click +1 Pint if you’ve had water recently.",
+      icon: "https://cdn-icons-png.flaticon.com/512/728/728093.png"
+    });
+  }
+}
+
+// Notify every 90 minutes if tab is open
+setInterval(() => {
+  const now = new Date();
+  const hours = now.getHours();
+  if (hours >= 8 && hours <= 20) {
+    showHydrationReminder();
+  }
+}, 90 * 60 * 1000); // every 90 minutes
+
+const hydrationPanel = document.createElement("div");
+hydrationPanel.className = "panel";
+
+const hydrationTitle = document.createElement("h2");
+hydrationTitle.textContent = "💧 Hydration Tracker";
+
+const hydrationStatus = document.createElement("p");
+hydrationStatus.id = "hydration-status";
+hydrationStatus.textContent = "0 / 2500 ml";
+hydrationStatus.style = "font-size: 1.2em; font-weight: bold;";
+
+const hydrationBtn = document.createElement("button");
+hydrationBtn.textContent = "+1 Pint (500ml)";
+hydrationBtn.style = "padding: 10px 16px; font-size: 1em; background: #00aaff; color: white; border: none; border-radius: 8px; cursor: pointer;";
+
+let hydrationTotal = parseInt(localStorage.getItem("hydrationTotal")) || 0;
+updateHydration();
+
+hydrationBtn.onclick = () => {
+  hydrationTotal += 500;
+  if (hydrationTotal > 4000) hydrationTotal = 4000; // cap at 4L
+  localStorage.setItem("hydrationTotal", hydrationTotal);
+  updateHydration();
+};
+
+function updateHydration() {
+  hydrationStatus.textContent = `${hydrationTotal} / 2500 ml`;
+  hydrationStatus.style.color = hydrationTotal >= 2000 && hydrationTotal <= 3000 ? "limegreen" : hydrationTotal > 3000 ? "orange" : "crimson";
+}
+
+const resetHydrationBtn = document.createElement("button");
+resetHydrationBtn.textContent = "Reset";
+resetHydrationBtn.style = "margin-left: 10px; padding: 6px 10px; font-size: 0.9em; background: #999; color: white; border: none; border-radius: 4px; cursor: pointer;";
+resetHydrationBtn.onclick = () => {
+  hydrationTotal = 0;
+  localStorage.setItem("hydrationTotal", hydrationTotal);
+  updateHydration();
+};
+
+const hydrationControls = document.createElement("div");
+hydrationControls.style = "margin-top: 10px; display: flex; gap: 10px; align-items: center;";
+hydrationControls.appendChild(hydrationBtn);
+hydrationControls.appendChild(resetHydrationBtn);
+
+hydrationPanel.appendChild(hydrationTitle);
+hydrationPanel.appendChild(hydrationStatus);
+hydrationPanel.appendChild(hydrationControls);
+document.body.appendChild(hydrationPanel);
+
+  
+
+</script>
+
+</body>
+</html>
